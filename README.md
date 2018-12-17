@@ -6,7 +6,7 @@ Springboot+websocket、reids、rabbitmq、nginx、springcloud
 
 #### 示例图
 
-![](https://raw.githubusercontent.com/LittleRookies/chatting/master/image/websocket.png)
+![](https://raw.githubusercontent.com/LittleRookies/chatting/725f7742b3c67436a839e641c6b86477bab9e174/image/websocket.png)
 
 #### 流程分析
 
@@ -17,7 +17,3 @@ Springboot+websocket、reids、rabbitmq、nginx、springcloud
 - springcloud集群监听mq，如果队列中有消息则取出并分析接收者。
 - springcloud集群从redis中发现b注册的服务，并向b的服务的mq发送消息。
 - b服务监听mq发现有新的消息，取出消息然后从redis中取出b的sessionid，然后向b发送消息。
-
-#### 完成度
-
-目前以实现了登陆后向redis保存用户名及sessionid的功能、nginx负载均衡。
