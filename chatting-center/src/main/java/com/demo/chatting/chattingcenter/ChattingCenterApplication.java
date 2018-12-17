@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
- * @author Jiang Hao
+ * @author Little Rookies
  * @create 2018-12-17 13:48
  */
 @EnableRabbit //开启rabbitmq监听

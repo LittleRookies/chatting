@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 
 /**
- * @author Jiang Hao
+ * @author Little Rookies
  * @create 2018-12-17 13:37
  */
 @JsonIgnoreProperties

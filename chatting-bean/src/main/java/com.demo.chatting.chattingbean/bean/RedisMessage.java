@@ -3,7 +3,7 @@ package com.demo.chatting.chattingbean.bean;
 import java.io.Serializable;
 
 /**
- * @author Jiang Hao
+ * @author Little Rookies
  * @create 2018-12-17 11:31
  */
 public class RedisMessage implements Serializable {

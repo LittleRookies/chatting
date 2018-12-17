@@ -5,7 +5,7 @@ package com.demo.chatting.chattingbean.bean;
 import java.io.Serializable;
 
 /**
- * @author Jiang Hao
+ * @author Little Rookies
  * @create 2018-12-17 13:27
  */
 public class SendMqMessage implements Serializable {
