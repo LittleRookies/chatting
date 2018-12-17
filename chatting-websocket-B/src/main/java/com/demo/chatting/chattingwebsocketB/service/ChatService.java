@@ -7,6 +7,7 @@ import com.demo.chatting.chattingbean.bean.ResponseMessage;
 import com.demo.chatting.chattingbean.bean.SendMqMessage;
 import com.demo.chatting.chattingbean.util.JsonUtil;
 import com.demo.chatting.chattingredis.unit.RedisUnit;
+import com.demo.chatting.chattingwebsocketB.util.MqInfoUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
@@ -26,17 +27,9 @@ import java.security.Principal;
  */
 @Service
 public class ChatService {
-    @Value("${exchange}")
-    private String exchange;
+    @Autowired
+    private MqInfoUtil mqInfoUtil;
 
-    @Value("${bind}")
-    private String bind;
-
-    @Value("${recQueue}")
-    private String recQueue;
-
-    @Value("${sendQueue}")
-    private String snedQueue;
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
@@ -76,7 +69,7 @@ public class ChatService {
         sendMqMessage.setAccount(name);
         sendMqMessage.setMessage(message);
         sendMqMessage.setSender(account);
-        rabbitTemplate.convertAndSend(exchange, bind, sendMqMessage);
+        rabbitTemplate.convertAndSend(mqInfoUtil.getExchange(), mqInfoUtil.getBind(), sendMqMessage);
 //        返回消息
         simpMessagingTemplate.convertAndSendToUser(principal.getName(), "/topic/getResponse/one", JSON.toJSON(responseMessage));
     }

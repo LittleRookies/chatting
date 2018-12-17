@@ -1,5 +1,6 @@
 package com.demo.chatting.chattingwebsocketB.config;
 
+import com.demo.chatting.chattingwebsocketB.util.MqInfoUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.*;
@@ -19,6 +20,9 @@ import org.springframework.context.annotation.Configuration;
 public class MyRabbitmqConfig {
     @Autowired
     private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    private MqInfoUtil mqInfoUtil;
 
 
     private Logger log = LoggerFactory.getLogger(MyRabbitmqConfig.class);
@@ -56,24 +60,24 @@ public class MyRabbitmqConfig {
     //-----------------------------------------------------声明Direct交换机------------------------------------------------------
     @Bean
     public Exchange directExchange() {
-        return ExchangeBuilder.directExchange("directExchange").durable(true).build();
+        return ExchangeBuilder.directExchange(mqInfoUtil.getExchange()).durable(true).build();
     }
 
     @Bean
-    public Queue receiveQueueB() {
-        return QueueBuilder.durable("receiveQueueB").build();
+    public Queue receiveQueue() {
+        return QueueBuilder.durable(mqInfoUtil.getRecQueue()).build();
     }
 
     @Bean
-    public Queue sendQueueB() {
-        return QueueBuilder.durable("sendQueueB").build();
+    public Queue sendQueue() {
+        return QueueBuilder.durable(mqInfoUtil.getSnedQueue()).build();
     }
 
     @Bean
     public Binding directBindSend(
             @Qualifier("directExchange") Exchange exchange,
-            @Qualifier("sendQueueB") Queue queue
+            @Qualifier("sendQueue") Queue queue
     ) {
-        return BindingBuilder.bind(queue).to(exchange).with("sendB").noargs();
+        return BindingBuilder.bind(queue).to(exchange).with(mqInfoUtil.getBind()).noargs();
     }
 }

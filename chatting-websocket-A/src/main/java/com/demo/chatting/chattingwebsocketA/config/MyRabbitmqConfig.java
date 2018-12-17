@@ -1,5 +1,6 @@
 package com.demo.chatting.chattingwebsocketA.config;
 
+import com.demo.chatting.chattingwebsocketA.util.MqInfoUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.*;
@@ -7,6 +8,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,6 +20,10 @@ import org.springframework.context.annotation.Configuration;
 public class MyRabbitmqConfig {
     @Autowired
     private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    private MqInfoUtil mqInfoUtil;
+
 
     private Logger log = LoggerFactory.getLogger(MyRabbitmqConfig.class);
 
@@ -50,17 +56,17 @@ public class MyRabbitmqConfig {
     //-----------------------------------------------------声明Direct交换机------------------------------------------------------
     @Bean
     public Exchange directExchange() {
-        return ExchangeBuilder.directExchange("directExchange").durable(true).build();
+        return ExchangeBuilder.directExchange(mqInfoUtil.getExchange()).durable(true).build();
     }
 
     @Bean
     public Queue receiveQueueA() {
-        return QueueBuilder.durable("receiveQueueA").build();
+        return QueueBuilder.durable(mqInfoUtil.getRecQueue()).build();
     }
 
     @Bean
     public Queue sendQueueA() {
-        return QueueBuilder.durable("sendQueueA").build();
+        return QueueBuilder.durable(mqInfoUtil.getSnedQueue()).build();
     }
 
     @Bean
@@ -68,6 +74,6 @@ public class MyRabbitmqConfig {
             @Qualifier("directExchange") Exchange exchange,
             @Qualifier("sendQueueA") Queue queue
     ) {
-        return BindingBuilder.bind(queue).to(exchange).with("sendA").noargs();
+        return BindingBuilder.bind(queue).to(exchange).with(mqInfoUtil.getBind()).noargs();
     }
 }

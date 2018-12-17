@@ -4,6 +4,7 @@ package com.demo.chatting.chattingwebsocketB.interceptor;
 import com.demo.chatting.chattingbean.bean.RedisMessage;
 import com.demo.chatting.chattingbean.bean.StompPrincipal;
 import com.demo.chatting.chattingredis.unit.RedisUnit;
+import com.demo.chatting.chattingwebsocketB.util.ResourceUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
+import javax.annotation.Resource;
 import java.security.Principal;
 import java.util.Map;
 import java.util.UUID;
@@ -21,6 +23,8 @@ import java.util.UUID;
  */
 public class CustomHandshakeHandler extends DefaultHandshakeHandler {
     private RedisUnit redisUnit;
+
+    private String MyType = ResourceUtil.getKey("MyType");
 
     public CustomHandshakeHandler(RedisUnit redisUnit) {
         this.redisUnit = redisUnit;
@@ -39,8 +43,7 @@ public class CustomHandshakeHandler extends DefaultHandshakeHandler {
         RedisMessage redisMessage = new RedisMessage();
 
         redisMessage.setSessionId(s);
-        String type = "B";
-        redisMessage.setType(type);
+        redisMessage.setType(MyType);
         redisUnit.save(account, redisMessage);
         return new StompPrincipal(s);
     }
